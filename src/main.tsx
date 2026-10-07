@@ -16,6 +16,8 @@ import {
 } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
+import { Casino } from "./components/Casino";
+import { StockMarket } from "./components/StockMarket";
 import {
   type Game,
   type Position,
@@ -24,13 +26,16 @@ import {
   loadGame,
   money,
   quote,
+  restartPredictions,
   setLimits,
   startDay,
-  restartPredictions,
   tick,
   trade,
 } from "./engine";
+import { netWorth, toggleWatch, tradeStock } from "./investing";
 import "./style.css";
+import "./upgrade.css";
+import { claimDaily, claimDayProfit } from "./wallet";
 
 import { CashOutModal } from "./components/CashOutModal";
 import { DayTradingPanel } from "./components/DayTradingPanel";
@@ -61,9 +66,24 @@ function App() {
     const timer = setInterval(() => setG((s) => tick(s)), 1000);
     return () => clearInterval(timer);
   }, []);
+  const lastSave = useRef<{ time: number; game: Game } | null>(null);
   useEffect(() => {
+    const previous = lastSave.current;
+    const economicChange =
+      !previous ||
+      previous.game.transactions !== g.transactions ||
+      previous.game.arcade !== g.arcade ||
+      previous.game.investing !== g.investing ||
+      previous.game.trades !== g.trades ||
+      previous.game.username !== g.username ||
+      previous.game.dayStart !== g.dayStart ||
+      previous.game.dayResult !== g.dayResult ||
+      previous.game.assets.some((a, i) => a.resolved !== g.assets[i]?.resolved);
+    if (!economicChange && previous && Date.now() - previous.time < 15000)
+      return;
     try {
       localStorage.setItem("marketrush-v1", JSON.stringify(g));
+      lastSave.current = { time: Date.now(), game: g };
       setSaveError(false);
     } catch {
       setSaveError(true);
@@ -77,9 +97,67 @@ function App() {
   }, [toast]);
   const currentGame = useRef(g);
   currentGame.current = g;
+  useEffect(() => {
+    const flush = () => {
+      try {
+        localStorage.setItem(
+          "marketrush-v1",
+          JSON.stringify(currentGame.current),
+        );
+      } catch {
+        setSaveError(true);
+      }
+    };
+    const hide = () => {
+      if (document.visibilityState === "hidden") flush();
+    };
+    addEventListener("pagehide", flush);
+    document.addEventListener("visibilitychange", hide);
+    return () => {
+      removeEventListener("pagehide", flush);
+      document.removeEventListener("visibilitychange", hide);
+    };
+  }, []);
   const day = page === "Day Trading",
     a = g.assets.find((a) => a.id === (day ? stock : selected))!;
   const announce = (text: string, error = false) => setToast({ text, error });
+  const apply = (fn: (g: Game) => Game, message?: string) => {
+    try {
+      const next = fn(tick(currentGame.current));
+      currentGame.current = next;
+      setG(next);
+      if (message) announce(message);
+    } catch (e) {
+      announce((e as Error).message, true);
+    }
+  };
+  const executeStock = (
+    ticker: string,
+    action: "buy" | "sell",
+    shares: number,
+  ) => {
+    const run = () => {
+      apply(
+        (s) => tradeStock(s, ticker, action, shares),
+        `${ticker} ${action === "buy" ? "shares purchased" : "shares sold"}.`,
+      );
+      setConfirmation(null);
+    };
+    const c = currentGame.current.investing.companies.find(
+      (c) => c.ticker === ticker,
+    )!;
+    if (
+      Number.isFinite(shares) &&
+      shares > 0 &&
+      (shares * c.price > 5000 ||
+        shares * c.price > netWorth(currentGame.current) * 0.25)
+    )
+      setConfirmation({
+        label: `${action} ${shares} ${ticker} shares. Prices are checked again at confirmation.`,
+        run,
+      });
+    else run();
+  };
   const execute = (
     id: string,
     side: Position["side"],
@@ -93,6 +171,7 @@ function App() {
       try {
         const live = currentGame.current;
         const updated = trade(live, id, side, action, qty);
+        currentGame.current = updated;
         setG(updated);
         const profit = updated.trades[0].profit;
         announce(
@@ -168,6 +247,12 @@ function App() {
             {day ? (
               <DayTradingPanel
                 g={g}
+                onClaimProfit={() =>
+                  apply(
+                    (s) => claimDayProfit(s),
+                    "Day-trading profit transferred to shared Market Cash.",
+                  )
+                }
                 onStart={() => {
                   setG(startDay(g));
                   announce("Opening bell! Your 25,000 MC trading day begins.");
@@ -338,8 +423,16 @@ function App() {
               </aside>
             </div>
           </>
+        ) : page === "Stock Market" ? (
+          <StockMarket
+            g={g}
+            onTrade={executeStock}
+            onWatch={(ticker) => apply((s) => toggleWatch(s, ticker))}
+          />
+        ) : page === "Casino" ? (
+          <Casino g={g} onAction={apply} />
         ) : page === "Portfolio" ? (
-          <Portfolio g={g} onTrade={execute} />
+          <Portfolio g={g} onTrade={execute} onStockTrade={executeStock} />
         ) : page === "Leaderboard" ? (
           <Leaderboard g={g} />
         ) : page === "Profile" ? (
@@ -349,16 +442,9 @@ function App() {
               setG({ ...g, username: name });
               announce("Profile updated.");
             }}
-            onBonus={() => {
-              if (g.bonusDate !== new Date().toDateString()) {
-                setG({
-                  ...g,
-                  cash: g.cash + 250,
-                  bonusDate: new Date().toDateString(),
-                });
-                announce("+250 MC · Daily boost claimed!");
-              }
-            }}
+            onBonus={() =>
+              apply((s) => claimDaily(s), "+250 MC · Daily boost claimed!")
+            }
           />
         ) : (
           <HowToPlay />

@@ -4,6 +4,7 @@ import { Activity, BarChart3, Menu, Trophy, Wallet, Zap } from "lucide-react";
 import { type Game, equity, money } from "../engine";
 
 import { signed, tabs } from "../format";
+import { netWorth } from "../investing";
 export function Navbar({
   page,
   setPage,
@@ -15,7 +16,7 @@ export function Navbar({
 }) {
   const [open, setOpen] = useState(false);
   const kind = page === "Day Trading" ? "stock" : "prediction";
-  const value = equity(g, kind);
+  const value = kind === "stock" ? equity(g, kind) : netWorth(g);
   return (
     <>
       <header>
@@ -28,7 +29,9 @@ export function Navbar({
         </a>
         <div className="header-wallet">
           <span>
-            <small>MARKET CASH</small>
+            <small>
+              {kind === "stock" ? "DAY PRACTICE CASH" : "MARKET CASH"}
+            </small>
             <b>
               {money(kind === "stock" ? g.dayCash : g.cash)} <em>MC</em>
             </b>
@@ -41,12 +44,12 @@ export function Navbar({
             <small>TOTAL P&L</small>
             <b
               className={
-                value >= (kind === "stock" ? 25000 : 10000)
+                value >= (kind === "stock" ? 25000 : g.initialWorth)
                   ? "positive"
                   : "negative"
               }
             >
-              {signed(value - (kind === "stock" ? 25000 : 10000))}
+              {signed(value - (kind === "stock" ? 25000 : g.initialWorth))}
             </b>
           </span>
         </div>
@@ -62,7 +65,7 @@ export function Navbar({
         </button>
       </header>
       <nav className={open ? "open" : ""}>
-        {tabs.map((t, i) => (
+        {tabs.map((t) => (
           <button
             key={t}
             className={page === t ? "active" : ""}
@@ -71,13 +74,13 @@ export function Navbar({
               setOpen(false);
             }}
           >
-            {i === 0 ? (
+            {t === "Markets" ? (
               <BarChart3 size={16} />
-            ) : i === 1 ? (
+            ) : t === "Day Trading" ? (
               <Zap size={16} />
-            ) : i === 2 ? (
+            ) : t === "Portfolio" ? (
               <Wallet size={16} />
-            ) : i === 3 ? (
+            ) : t === "Leaderboard" ? (
               <Trophy size={16} />
             ) : null}
             {t}

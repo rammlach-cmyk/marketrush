@@ -5,9 +5,11 @@ import { pct, remaining, signed } from "../format";
 export function DayTradingPanel({
   g,
   onStart,
+  onClaimProfit,
 }: {
   g: Game;
   onStart: () => void;
+  onClaimProfit: () => void;
 }) {
   const elapsed = g.dayStart
     ? Math.max(0, Math.min(1, (Date.now() - g.dayStart) / 600000))
@@ -38,20 +40,40 @@ export function DayTradingPanel({
           </p>
         )}
       </div>
-      {!g.dayStart || g.dayResult !== null ? (
-        <button className="primary" onClick={onStart}>
-          <Zap size={16} />
-          {g.dayResult !== null ? "Play another day" : "Ring the opening bell"}
-        </button>
-      ) : (
-        <div className="session-clock">
-          <small>UNTIL CLOSING BELL</small>
-          <strong>{remaining((g.dayEnd || 0) - Date.now())}</strong>
-          <div className="probability">
-            <i style={{ width: `${elapsed * 100}%` }} />
+      <div className="day-controls">
+        {g.dayResult !== null && g.dayResult > 25000 && (
+          <button
+            className="secondary"
+            disabled={g.dayProfitClaimed}
+            onClick={onClaimProfit}
+          >
+            {g.dayProfitClaimed
+              ? "Profit transferred ✓"
+              : `Transfer ${money(g.dayResult - 25000)} MC profit`}
+          </button>
+        )}
+        {!g.dayStart || g.dayResult !== null ? (
+          <button className="primary" onClick={onStart}>
+            <Zap size={16} />
+            {g.dayResult !== null
+              ? "Play another day"
+              : "Ring the opening bell"}
+          </button>
+        ) : (
+          <div className="session-clock">
+            <small>UNTIL CLOSING BELL</small>
+            <strong>{remaining((g.dayEnd || 0) - Date.now())}</strong>
+            <div className="probability">
+              <i style={{ width: `${elapsed * 100}%` }} />
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
+      <p className="practice-note">
+        25,000 MC practice principal stays separate. Settled profits can
+        transfer once to your shared wallet. Starting another day transfers
+        unclaimed profits automatically.
+      </p>
     </div>
   );
 }

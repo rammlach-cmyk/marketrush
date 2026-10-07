@@ -43,6 +43,21 @@ export function HowToPlay() {
             "Short with care",
             "Shorts reserve the share price as collateral. Profit is entry minus current price. Cover to close; stop-loss and take-profit execute at the next simulated price, so gaps can exceed your stop.",
           ],
+          [
+            "07",
+            "Invest for the long game",
+            "The Stock Market offers 33 fictional companies across 13 industries. Shares can be fractional. Prices update every five real-world minutes, with growth, health, momentum, sector trends, news, and market sentiment shaping each move. MRX tracks equal-weight performance from 10,000.",
+          ],
+          [
+            "08",
+            "Play the fictional arcade",
+            "Blackjack, roulette, slots, high/low, and the Market Wheel use the same Market Cash as predictions and long-term stocks. The rules and payout odds appear in each game. No currency can be purchased or converted into real-world value.",
+          ],
+          [
+            "09",
+            "Keep one shared wallet",
+            "Prediction payouts, stock sales, arcade payouts, daily bonuses, and rewards all flow through your shared wallet and transaction history. Day trading retains a separate 25,000 MC practice account; transfer settled profits once, or let the next session transfer them automatically. If shared net worth falls below 1 MC, a free 1,000 MC recovery grant is available.",
+          ],
         ].map(([n, title, body]) => (
           <div className="panel" key={n}>
             <span className="step">{n}</span>
@@ -57,8 +72,8 @@ export function HowToPlay() {
           No deposits, withdrawals, crypto, purchasable Market Cash, or
           real-money prizes. This is a local single-player simulation with demo
           rivals, not financial advice. Daily bonuses and achievement rewards go
-          to your prediction wallet. New trading days reset only the day-trading
-          wallet.
+          to your shared wallet. New trading days reset only the practice
+          account after transferring any unclaimed settled profits.
         </p>
       </div>
     </>

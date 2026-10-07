@@ -1,3 +1,17 @@
+import { createArcade, type Arcade } from "./arcade";
+import {
+  createInvesting,
+  netWorth,
+  updateInvesting,
+  type Investing,
+} from "./investing";
+import {
+  claimDayProfit,
+  recordTransaction,
+  walletChange,
+  type DaySnapshot,
+  type Transaction,
+} from "./wallet";
 export type Point = { time: number; price: number };
 export type Asset = {
   id: string;
@@ -43,6 +57,14 @@ export type News = {
 };
 export type Game = {
   version: 1;
+  schemaVersion: 2;
+  investing: Investing;
+  arcade: Arcade;
+  transactions: Transaction[];
+  transactionId: number;
+  initialWorth: number;
+  dailySnapshot: DaySnapshot;
+  dayProfitClaimed: boolean;
   cash: number;
   dayCash: number;
   assets: Asset[];
@@ -140,6 +162,14 @@ export function createGame(now = Date.now()): Game {
   );
   return {
     version: 1,
+    schemaVersion: 2,
+    investing: createInvesting(now),
+    arcade: createArcade(),
+    transactions: [],
+    transactionId: 0,
+    initialWorth: 10000,
+    dailySnapshot: { date: new Date(now).toDateString(), value: 10000 },
+    dayProfitClaimed: false,
     cash: 10000,
     dayCash: 25000,
     assets,
@@ -240,24 +270,32 @@ export function trade(
       )
       .filter((p) => p.qty > 0);
   }
-  return reward({
-    ...g,
-    [key]: cash,
-    positions,
-    trades: [
+  return reward(
+    recordTransaction(
       {
-        id: `${now}-${g.trades.length}`,
-        asset: id,
-        side,
-        action,
-        qty,
-        price,
-        time: now,
-        profit,
+        ...g,
+        [key]: cash,
+        positions,
+        trades: [
+          {
+            id: `${now}-${g.trades.length}`,
+            asset: id,
+            side,
+            action,
+            qty,
+            price,
+            time: now,
+            profit,
+          },
+          ...g.trades,
+        ].slice(0, 2000),
       },
-      ...g.trades,
-    ].slice(0, 2000),
-  });
+      cash - g[key],
+      `${a.kind === "stock" ? "DAY TRADING" : "PREDICTION MARKET"} ${id} ${action.toUpperCase()}`,
+      a.kind === "stock" ? "practice" : "shared",
+      now,
+    ),
+  );
 }
 export function reward(g: Game): Game {
   const wins = g.trades.filter((t) => t.profit > 0).length;
@@ -283,31 +321,45 @@ export function reward(g: Game): Game {
   ];
   for (const [name, ok, amount] of conditions)
     if (ok && !g.rewards.includes(name))
-      g = { ...g, cash: g.cash + amount, rewards: [...g.rewards, name] };
+      g = walletChange(
+        { ...g, rewards: [...g.rewards, name] },
+        amount,
+        `ACHIEVEMENT: ${name}`,
+        g.lastTick,
+      );
   return g;
 }
 export function startDay(g: Game, now = Date.now()): Game {
   if (g.dayStart && g.dayResult === null) return g;
-  return {
-    ...g,
-    dayCash: 25000,
-    dayStart: now,
-    dayEnd: now + 600000,
-    dayResult: null,
-    positions: g.positions.filter(
-      (p) => g.assets.find((a) => a.id === p.asset)?.kind !== "stock",
-    ),
-    assets: g.assets.map((a) =>
-      a.kind === "stock"
-        ? {
-            ...a,
-            price: a.anchor,
-            momentum: 0,
-            history: [{ time: now, price: a.anchor }],
-          }
-        : a,
-    ),
-  };
+  if (g.dayResult !== null && g.dayResult > 25000 && !g.dayProfitClaimed)
+    g = claimDayProfit(g, now);
+  return recordTransaction(
+    {
+      ...g,
+      dayCash: 25000,
+      dayProfitClaimed: false,
+      dayStart: now,
+      dayEnd: now + 600000,
+      dayResult: null,
+      positions: g.positions.filter(
+        (p) => g.assets.find((a) => a.id === p.asset)?.kind !== "stock",
+      ),
+      assets: g.assets.map((a) =>
+        a.kind === "stock"
+          ? {
+              ...a,
+              price: a.anchor,
+              momentum: 0,
+              history: [{ time: now, price: a.anchor }],
+            }
+          : a,
+      ),
+    },
+    25000 - g.dayCash,
+    "DAY PRACTICE SESSION START",
+    "practice",
+    now,
+  );
 }
 export function setLimits(
   g: Game,
@@ -364,6 +416,13 @@ export function tick(
       for (const p of g.positions.filter((p) => p.asset === a.id)) {
         const value = quote(a, p.side) * p.qty;
         g.cash += value;
+        g = recordTransaction(
+          g,
+          value,
+          `PREDICTION MARKET ${a.id} RESOLUTION`,
+          "shared",
+          now,
+        );
         g.trades = [
           {
             id: `resolve-${a.id}-${p.side}`,
@@ -477,7 +536,17 @@ export function tick(
         g = trade(g, p.asset, p.side, "sell", p.qty, now);
     g.dayResult = g.dayCash;
   }
-  return reward({ ...g, news: g.news.slice(0, 40) });
+  const date = new Date(now).toDateString();
+  const dailySnapshot =
+    original.dailySnapshot.date === date
+      ? original.dailySnapshot
+      : { date, value: netWorth(original) };
+  return reward({
+    ...g,
+    dailySnapshot,
+    investing: updateInvesting(g.investing, now, random),
+    news: g.news.slice(0, 40),
+  });
 }
 export function loadGame(): Game {
   try {
@@ -491,7 +560,7 @@ export function loadGame(): Game {
         Number.isFinite(g.cash) &&
         Number.isFinite(g.dayCash)
       )
-        return tick(g);
+        return tick(migrateGame(g));
     }
   } catch {
     /* Start safely when a save is unavailable. */
@@ -530,4 +599,33 @@ export function restartPredictions(g: Game, now = Date.now()): Game {
       ...g.news,
     ].slice(0, 40),
   };
+}
+
+/** Preserve v1 saves and add independent defaults for newly introduced features. */
+export function migrateGame(raw: unknown, now = Date.now()): Game {
+  const old = raw as Partial<Game>;
+  if (
+    !old ||
+    old.version !== 1 ||
+    !Number.isFinite(old.cash) ||
+    !Number.isFinite(old.dayCash) ||
+    !Array.isArray(old.assets) ||
+    !Array.isArray(old.positions)
+  )
+    throw Error("Invalid MarketRush save.");
+  const g = {
+    ...old,
+    schemaVersion: 2,
+    investing: old.investing ?? createInvesting(now),
+    arcade: old.arcade ?? createArcade(),
+    transactions: old.transactions ?? [],
+    transactionId: old.transactionId ?? 0,
+    dayProfitClaimed: old.dayProfitClaimed ?? false,
+  } as Game;
+  g.initialWorth = old.initialWorth ?? netWorth(g);
+  g.dailySnapshot = old.dailySnapshot ?? {
+    date: new Date(now).toDateString(),
+    value: netWorth(g),
+  };
+  return g;
 }

@@ -1,9 +1,10 @@
 import { useState } from "react";
 
 import { Sparkles } from "lucide-react";
-import { type Game, equity, money } from "../engine";
+import { type Game, money } from "../engine";
 
 import { signed } from "../format";
+import { netWorth } from "../investing";
 export function Profile({
   g,
   onBonus,
@@ -73,7 +74,7 @@ export function Profile({
           <div className="stats-row profile-stats">
             {[
               ["Fake cash", money(g.cash)],
-              ["Portfolio value", money(equity(g, "prediction"))],
+              ["Portfolio value", money(netWorth(g))],
               [
                 "Lifetime realized P&L",
                 signed(closed.reduce((s, t) => s + t.profit, 0)),

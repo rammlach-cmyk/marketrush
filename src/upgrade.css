@@ -1,0 +1,1381 @@
+/* Long-term investing and the fictional arcade extend the original visual system. */
+nav {
+  gap: 22px;
+}
+nav > button {
+  font-size: 11px;
+}
+select {
+  background: #0b111e;
+  border: 1px solid #2d3649;
+  border-radius: 7px;
+  color: #dce4f1;
+  padding: 10px 12px;
+  font: inherit;
+  font-size: 11px;
+  max-width: 100%;
+}
+select:focus-visible {
+  outline: 2px solid var(--purple);
+  outline-offset: 3px;
+}
+.update-clock {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  border: 1px solid #47e6b133;
+  border-radius: 10px;
+  background: #16271f;
+  padding: 13px 20px;
+  color: var(--green);
+}
+.update-clock small {
+  display: block;
+  font-size: 8px;
+  letter-spacing: 1px;
+  color: #95baa9;
+}
+.update-clock strong {
+  display: block;
+  font-size: 28px;
+  letter-spacing: 1px;
+  margin-top: 3px;
+  min-width: 81px;
+  font-variant-numeric: tabular-nums;
+}
+.stock-overview {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 310px;
+  gap: 23px;
+  margin-bottom: 23px;
+}
+.index-panel {
+  background: linear-gradient(135deg, #192e2580, #121824);
+}
+.index-panel .section-title {
+  margin-bottom: 0;
+}
+.index-panel h2 {
+  font-size: 31px;
+}
+.index-panel h2 > span {
+  font-size: 13px;
+  margin-left: 9px;
+}
+.index-panel .chart {
+  margin-top: 14px;
+}
+.index-panel .chart svg {
+  max-height: 150px;
+}
+.index-panel .chart-legend {
+  margin-bottom: 0;
+}
+.long-summary {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 11px;
+}
+.long-summary > svg {
+  color: var(--purple);
+  margin-bottom: 5px;
+}
+.long-summary > small {
+  letter-spacing: 1.4px;
+  font-size: 9px;
+}
+.long-summary > strong {
+  font-size: 29px;
+}
+.long-summary em,
+.arcade-wallet em {
+  font-size: 12px;
+  font-style: normal;
+  color: var(--muted);
+}
+.long-summary .detail-line {
+  margin: 4px 0;
+}
+.long-summary > p {
+  font-size: 11px;
+}
+.invest-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 310px;
+  gap: 23px;
+}
+.invest-workspace > section {
+  min-width: 0;
+}
+.company-detail .featured-heading p {
+  max-width: 550px;
+  font-size: 12px;
+}
+.favorite {
+  color: #6f7b91;
+  display: grid;
+  place-items: center;
+  padding: 7px;
+  border-radius: 6px;
+}
+.favorite:hover {
+  background: #fbbf2412;
+  color: #fbbf24;
+}
+.favorite.on {
+  color: #fbbf24;
+}
+.favorite.on > svg {
+  fill: #fbbf2433;
+}
+.company-price {
+  display: flex;
+  align-items: baseline;
+  gap: 15px;
+  margin-top: 25px;
+}
+.company-price strong {
+  font-size: 40px;
+  letter-spacing: -1px;
+  font-variant-numeric: tabular-nums;
+  animation: quote-update 0.6s ease-out;
+}
+.company-price > span {
+  font-size: 12px;
+}
+.company-detail .market-metrics {
+  padding-bottom: 0;
+}
+.stock-order {
+  padding-top: 0;
+  position: sticky;
+  top: 173px;
+  align-self: start;
+}
+.market-events {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 23px;
+}
+.market-events > span {
+  font-size: 10px;
+  padding: 9px 14px;
+  border: 1px solid #364158;
+  background: #1b2230;
+  border-radius: 7px;
+}
+.screener,
+.stock-news {
+  margin-top: 23px;
+}
+.screener-controls {
+  display: flex;
+  gap: 12px;
+  align-items: end;
+  margin-bottom: 18px;
+}
+.screener-controls > label:not(.search) {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 9px;
+}
+.screener-controls .search {
+  flex: 1;
+  min-width: 100px;
+  height: 35px;
+  margin-top: 0;
+}
+.screener-controls .search input {
+  width: 100%;
+}
+.company-table {
+  max-height: 460px;
+  overflow: auto;
+}
+.company-table th {
+  position: sticky;
+  top: 0;
+  background: #151c2a;
+  z-index: 1;
+}
+.company-table td {
+  font-size: 11px;
+  padding: 13px 9px;
+}
+.company-table td small {
+  display: block;
+  font-size: 9px;
+  margin-top: 5px;
+}
+.ticker-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #47e6b112;
+  border: 1px solid #47e6b122;
+  border-radius: 5px;
+  color: var(--green);
+  padding: 7px 9px;
+  font-size: 10px;
+}
+.scrolling-news {
+  max-height: 300px;
+  overflow: auto;
+  padding-right: 8px;
+}
+.scrolling-news .news-item:first-child {
+  border-top: 0;
+}
+.scrolling-news .news-item > span:last-child {
+  font-size: 10px;
+  flex-shrink: 0;
+}
+.day-controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-shrink: 0;
+}
+.day-controls .secondary {
+  width: auto;
+  margin-top: 0;
+}
+.day-banner:has(.practice-note) {
+  flex-wrap: wrap;
+}
+.practice-note {
+  flex-basis: 100%;
+  font-size: 10px !important;
+  color: #a49aba;
+  margin-top: -5px;
+  max-width: none !important;
+}
+.portfolio-performance {
+  grid-template-columns: repeat(3, 1fr);
+}
+.portfolio-note {
+  font-size: 10px;
+  margin: -8px 0 26px;
+}
+.holdings-title {
+  font-size: 20px;
+  margin-bottom: 18px;
+}
+.stock-holdings {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 25px;
+}
+.stock-holdings .section-title > span {
+  font-size: 10px;
+  color: var(--muted);
+}
+.stock-holdings .position-values strong {
+  font-size: 21px;
+}
+.wallet-history {
+  margin: 23px 0;
+}
+.wallet-history .section-title {
+  margin-bottom: 13px;
+}
+.ledger-list {
+  max-height: 450px;
+  overflow: auto;
+}
+.ledger-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  padding: 15px 0;
+  gap: 20px;
+}
+.ledger-row > div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.ledger-row > div:last-child {
+  text-align: right;
+  flex-shrink: 0;
+}
+.ledger-row b,
+.ledger-row strong {
+  font-size: 11px;
+}
+.ledger-row small {
+  font-size: 9px;
+}
+.wallet-history > p {
+  margin-top: 16px;
+  font-size: 10px;
+}
+.stock-trade-history {
+  margin-top: 23px;
+}
+.stock-trade-history > h3 {
+  margin-bottom: 10px;
+}
+.arcade-wallet {
+  padding: 18px 23px;
+  border: 1px solid #ac93ff33;
+  border-radius: 11px;
+  background: linear-gradient(140deg, #2b1f40, #181c2d);
+}
+.arcade-wallet > small {
+  letter-spacing: 1px;
+  display: block;
+  margin-bottom: 5px;
+}
+.arcade-wallet > strong {
+  font-size: 29px;
+}
+.arcade-warning {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 19px;
+  background: #15312573;
+  border: 1px solid #47e6b13b;
+  border-radius: 9px;
+  color: #7be6b8;
+  font-size: 10px;
+  letter-spacing: 0.6px;
+  margin-bottom: 24px;
+}
+.arcade-warning > svg {
+  flex-shrink: 0;
+}
+.arcade-warning > span {
+  margin-left: auto;
+  color: #9cacba;
+  font-size: 9px;
+  letter-spacing: 0;
+}
+.casino-lobby {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 13px;
+  margin-bottom: 25px;
+}
+.casino-tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  text-align: center;
+  padding: 23px 12px;
+  min-height: 152px;
+  border: 1px solid var(--border);
+  background: linear-gradient(135deg, #1b1c2e, #121824);
+  border-radius: 11px;
+  transition:
+    transform 0.15s,
+    border-color 0.15s;
+}
+.casino-tile:hover {
+  transform: translateY(-3px);
+  border-color: #ac93ff88;
+}
+.casino-tile.active {
+  border-color: #ac93ff;
+  background: linear-gradient(135deg, #352247, #1a2233);
+  box-shadow: 0 0 25px #ac93ff0a;
+}
+.casino-symbol {
+  font-size: 33px;
+  line-height: 1;
+  color: #c2a6ff;
+  text-shadow: 0 0 22px #ac93ff44;
+}
+.casino-tile > strong {
+  font-size: 16px;
+}
+.casino-tile > small {
+  font-size: 7px;
+  letter-spacing: 1px;
+}
+.casino-tile > .tiny {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 6px;
+}
+.arcade-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 310px;
+  gap: 23px;
+  align-items: start;
+}
+.arcade-game {
+  padding: 26px;
+  min-width: 0;
+}
+.arcade-game .section-title p {
+  font-size: 11px;
+  margin-top: 6px;
+}
+.arcade-sidebar {
+  padding-top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+}
+.arcade-sidebar .detail-line {
+  margin-bottom: 0;
+}
+.arcade-sidebar > .panel > p {
+  font-size: 10px;
+}
+.arcade-sidebar .quick-amounts {
+  margin-bottom: 15px;
+}
+.daily-arcade {
+  background: linear-gradient(130deg, #2b213c, #141b2a);
+}
+.daily-arcade > svg {
+  color: #c1a3fc;
+  margin-bottom: 15px;
+}
+.daily-arcade > h3,
+.recovery > h3 {
+  margin-bottom: 12px;
+}
+.daily-arcade > .primary {
+  margin-top: 20px;
+}
+.active-hand-note {
+  margin-top: 18px;
+  color: #f5ce8c;
+}
+.card-table {
+  padding: 23px 25px;
+  border: 1px solid #34725b;
+  border-radius: 16px;
+  background: radial-gradient(ellipse at 50% 40%, #24503f, #122c25 75%);
+  box-shadow: inset 0 0 40px #0003;
+  margin: 20px 0;
+}
+.hand-label {
+  display: flex;
+  justify-content: space-between;
+  color: #92bfab;
+  font-size: 9px;
+  letter-spacing: 1.4px;
+  font-weight: 700;
+}
+.hand-label > span {
+  color: #cce8d9;
+  letter-spacing: 0;
+}
+.cards {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 15px;
+  min-height: 125px;
+}
+.playing-card {
+  width: 82px;
+  height: 117px;
+  background: #f3f2ee;
+  border: 1px solid #fff;
+  border-radius: 8px;
+  color: #192237;
+  box-shadow: 0 4px 14px #0005;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  animation: card-deal 0.3s ease-out;
+}
+.playing-card > b {
+  position: absolute;
+  top: 8px;
+  left: 9px;
+  font-size: 15px;
+}
+.playing-card > strong {
+  font-size: 33px;
+}
+.playing-card > small {
+  position: absolute;
+  bottom: 8px;
+  right: 9px;
+  color: inherit;
+  font-size: 10px;
+}
+.playing-card.red-suit {
+  color: #db3e51;
+}
+.playing-card.face-down {
+  background: repeating-linear-gradient(
+    45deg,
+    #563c84,
+    #563c84 3px,
+    #45306e 3px,
+    #45306e 6px
+  );
+  border: 3px solid #dacbea;
+}
+.face-down > span {
+  display: grid;
+  place-items: center;
+  width: 45px;
+  height: 45px;
+  border: 1px solid #bfa4f980;
+  border-radius: 50%;
+  font-size: 17px;
+  color: #ddcaff;
+  font-family: "Space Grotesk", sans-serif;
+}
+.table-inscription {
+  text-align: center;
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: #5a957c;
+  margin: 23px 0;
+}
+.card-placeholder {
+  border: 1px dashed #6ea78b55;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  width: 160px;
+  height: 117px;
+  color: #88b49e;
+  font-size: 11px;
+}
+.stake {
+  text-align: center;
+  color: #87b5a0;
+  font-size: 10px;
+  margin-top: 18px;
+}
+.stake b {
+  color: #d1eddf;
+}
+.arcade-actions {
+  display: flex;
+  gap: 12px;
+  align-items: stretch;
+}
+.arcade-actions > .secondary {
+  margin-top: 0;
+  flex: 1;
+}
+.arcade-actions > .primary {
+  flex: 1;
+}
+.game-rules {
+  font-size: 10px;
+  line-height: 1.8;
+  border-top: 1px solid var(--border);
+  margin-top: 23px;
+  padding-top: 19px;
+}
+.arcade-result {
+  display: flex;
+  gap: 12px;
+  padding: 17px 18px;
+  background: #1a2e2699;
+  border: 1px solid #47e6b13b;
+  border-radius: 9px;
+  margin-top: 20px;
+  color: var(--green);
+  animation: quote-update 0.4s ease-out;
+}
+.arcade-result.loss {
+  background: #301e2a66;
+  border-color: #ff748633;
+  color: #ffa0af;
+}
+.arcade-result > svg {
+  flex-shrink: 0;
+}
+.arcade-result strong {
+  font-size: 13px;
+}
+.arcade-result p {
+  font-size: 10px;
+  margin-top: 5px;
+}
+.roulette-stage,
+.market-wheel-stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0 25px;
+  min-height: 280px;
+}
+.roulette-ring {
+  width: 264px;
+  height: 264px;
+  background: repeating-conic-gradient(
+    #da4f65 0deg 9.73deg,
+    #1c2334 9.73deg 19.46deg
+  );
+  border: 7px solid #957448;
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 6px #322a25,
+    inset 0 0 12px #0005;
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+.wheel-center {
+  width: 165px;
+  height: 165px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: radial-gradient(#26334c, #131b2b);
+  border: 3px solid #9b8050;
+  box-shadow: 0 0 0 5px #182234;
+}
+.wheel-center > strong {
+  font-size: 51px;
+  font-family: "Space Grotesk", sans-serif;
+}
+.wheel-center > small {
+  font-size: 7px;
+  letter-spacing: 1px;
+  color: #bbaf92;
+}
+.wheel-center.red > strong {
+  color: #ff8b9e;
+}
+.wheel-center.green > strong {
+  color: var(--green);
+}
+.wheel-center.black > strong {
+  color: #d1d9e7;
+}
+.wheel-pointer {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #f7d298;
+  font-size: 25px;
+  z-index: 1;
+  text-shadow: 0 3px 4px #0005;
+}
+.wheel-played {
+  animation: wheel-turn 0.9s cubic-bezier(0.1, 0.7, 0.2, 1);
+}
+.roulette-options {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+.roulette-options > button {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid #3b4257;
+  border-radius: 6px;
+  font-size: 11px;
+  text-transform: capitalize;
+}
+.roulette-options > button.selected {
+  background: #ac93ff25;
+  color: #dacbff;
+  border-color: #ac93ff;
+}
+.number-choice {
+  display: block;
+  font-size: 10px;
+  color: var(--muted);
+  margin-bottom: 17px;
+}
+.number-choice input {
+  margin-top: 6px;
+}
+.slot-machine {
+  border: 1px solid #a58343;
+  border-radius: 15px;
+  padding: 23px 25px;
+  background: linear-gradient(135deg, #352a3e, #1b1c33);
+  margin: 25px 0;
+  box-shadow: inset 0 0 35px #ac93ff10;
+}
+.slot-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 13px;
+  font-family: "Space Grotesk", sans-serif;
+  letter-spacing: 5px;
+  color: #f4d58d;
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+.slot-title > span {
+  color: var(--purple);
+}
+.slot-reels {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  padding: 14px;
+  background: #0a1020;
+  border: 1px solid #3b324d;
+  border-radius: 9px;
+}
+.reel {
+  display: grid;
+  place-items: center;
+  background: linear-gradient(#ede5f7, #fff, #c6bbd5);
+  height: 125px;
+  flex: 1;
+  border-radius: 6px;
+  font-size: 56px;
+  box-shadow: inset 0 5px 9px #55447533;
+  max-width: 140px;
+}
+.reel.spun {
+  animation: reel-spin 0.65s ease-out both;
+}
+.slot-lights {
+  text-align: center;
+  letter-spacing: 7px;
+  color: #eac57b;
+  font-size: 7px;
+  margin-top: 20px;
+}
+.payout-strip {
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  background: #1c2333;
+  border-radius: 8px;
+  padding: 14px;
+  margin-top: 20px;
+}
+.payout-strip > span {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 8px;
+  color: var(--muted);
+  text-align: center;
+  flex: 1;
+}
+.payout-strip b {
+  font-size: 18px;
+  color: #cbb4ff;
+}
+.high-low-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 25px 15px 32px;
+  margin: 20px 0;
+  background: radial-gradient(ellipse, #292140, #171c2b);
+  border: 1px solid #463558;
+  border-radius: 13px;
+}
+.streak-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #f9d190;
+  border-radius: 20px;
+  background: #fbbf2412;
+  border: 1px solid #fbbf2422;
+  padding: 8px 15px;
+  font-size: 9px;
+  letter-spacing: 1px;
+}
+.high-low-stage .playing-card {
+  width: 108px;
+  height: 150px;
+}
+.high-low-stage .playing-card > strong {
+  font-size: 48px;
+}
+.rank-scale {
+  font-size: 9px;
+  color: var(--muted);
+}
+.market-wheel-disc {
+  position: relative;
+  width: 272px;
+  height: 272px;
+  border-radius: 50%;
+  background: conic-gradient(
+    #412e65 0deg 51.43deg,
+    #20485b 51.43deg 102.86deg,
+    #336256 102.86deg 154.29deg,
+    #605439 154.29deg 205.72deg,
+    #5d384d 205.72deg 257.15deg,
+    #345f76 257.15deg 308.58deg,
+    #594782 308.58deg 360deg
+  );
+  border: 5px solid #a590d5;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 0 0 6px #251f34;
+}
+.market-wheel-disc > span {
+  position: absolute;
+  left: calc(50% - 18px);
+  top: calc(50% - 8px);
+  width: 36px;
+  text-align: center;
+  font-size: 12px;
+  color: #f0e5ff;
+  font-weight: 700;
+}
+.market-wheel-disc .wheel-center {
+  width: 155px;
+  height: 155px;
+  border-color: #9a81c2;
+}
+.market-wheel-disc .wheel-center > strong {
+  font-size: 41px;
+  color: #decafa;
+}
+.wheel-odds {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 18px;
+}
+.wheel-odds > span {
+  background: #22293a;
+  border-radius: 5px;
+  padding: 7px 9px;
+  font-size: 9px;
+  color: var(--muted);
+  flex: 1;
+  white-space: nowrap;
+}
+.wheel-odds b {
+  color: #cbb4ff;
+  margin-right: 5px;
+}
+.arcade-sidebar .safety {
+  margin-top: 0;
+}
+.stock-news .section-title h3 {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 12px;
+}
+@keyframes quote-update {
+  from {
+    opacity: 0.4;
+    filter: brightness(1.8);
+  }
+  to {
+    opacity: 1;
+    filter: brightness(1);
+  }
+}
+@keyframes card-deal {
+  from {
+    opacity: 0;
+    transform: translateY(-12px) rotate(-3deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(0);
+  }
+}
+@keyframes wheel-turn {
+  from {
+    transform: rotate(-360deg);
+    filter: blur(1px);
+  }
+  to {
+    transform: rotate(0);
+    filter: blur(0);
+  }
+}
+@keyframes reel-spin {
+  0% {
+    filter: blur(5px);
+    transform: translateY(-4px);
+  }
+  50% {
+    filter: blur(3px);
+    transform: translateY(4px);
+  }
+  100% {
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+@media (max-width: 1200px) {
+  nav {
+    gap: 19px;
+  }
+  .simulation {
+    display: none;
+  }
+  .stock-overview,
+  .invest-workspace,
+  .arcade-layout {
+    grid-template-columns: minmax(0, 1fr) 280px;
+    gap: 18px;
+  }
+  .screener-controls {
+    flex-wrap: wrap;
+  }
+  .screener-controls .search {
+    flex-basis: 100%;
+  }
+  .day-controls {
+    flex-wrap: wrap;
+  }
+  .stock-holdings {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .casino-lobby {
+    gap: 10px;
+  }
+  .casino-tile > strong {
+    font-size: 14px;
+  }
+  .casino-tile > small {
+    font-size: 6px;
+    letter-spacing: 0.5px;
+  }
+  .arcade-warning > span {
+    display: none;
+  }
+}
+@media (max-width: 760px) {
+  nav {
+    gap: 21px;
+  }
+  .stock-overview,
+  .invest-workspace,
+  .arcade-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .stock-overview > * {
+    width: 100%;
+  }
+  .invest-workspace > section,
+  .arcade-layout > section {
+    width: 100%;
+  }
+  .stock-order {
+    position: static;
+    padding-top: 0;
+    width: 100%;
+    order: -1;
+  }
+  .stock-overview .long-summary {
+    padding: 18px;
+    gap: 6px;
+  }
+  .long-summary > svg {
+    display: none;
+  }
+  .long-summary > strong {
+    font-size: 23px;
+  }
+  .long-summary > p:last-child {
+    display: none;
+  }
+  .index-panel .section-title {
+    flex-wrap: wrap;
+  }
+  .index-panel .section-title .tiny {
+    font-size: 6px;
+  }
+  .index-panel h2 {
+    font-size: 26px;
+  }
+  .stock-overview {
+    margin-bottom: 18px;
+  }
+  .page-heading:has(.update-clock),
+  .page-heading:has(.arcade-wallet) {
+    flex-wrap: wrap;
+  }
+  .update-clock {
+    padding: 10px 15px;
+    width: 100%;
+    justify-content: space-between;
+  }
+  .update-clock > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex: 1;
+  }
+  .update-clock strong {
+    font-size: 23px;
+    margin: 0;
+  }
+  .update-clock small {
+    font-size: 8px;
+  }
+  .company-price > strong {
+    font-size: 34px;
+  }
+  .company-detail {
+    padding: 18px;
+  }
+  .company-detail .market-metrics {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+  .company-detail .market-metrics > div:nth-child(2) {
+    border: 0;
+  }
+  .screener,
+  .stock-news {
+    padding: 17px;
+  }
+  .screener-controls > label:not(.search) {
+    flex: 1;
+    min-width: 100px;
+  }
+  .company-table {
+    max-height: 420px;
+  }
+  .scrolling-news .news-item > span:last-child {
+    font-size: 8px;
+  }
+  .day-controls {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .day-controls .secondary {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  .practice-note {
+    margin-top: 0;
+  }
+  .portfolio-performance {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .stock-holdings {
+    grid-template-columns: 1fr;
+  }
+  .wallet-history {
+    padding: 16px;
+  }
+  .wallet-history .section-title {
+    flex-wrap: wrap;
+  }
+  .wallet-history .section-title select {
+    padding: 7px 9px;
+    font-size: 9px;
+  }
+  .ledger-row {
+    gap: 10px;
+  }
+  .ledger-row b,
+  .ledger-row strong {
+    font-size: 9px;
+  }
+  .ledger-row small {
+    font-size: 7px;
+  }
+  .ledger-row > div:first-child {
+    max-width: 60%;
+  }
+  .arcade-wallet {
+    padding: 14px 18px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .arcade-wallet > small {
+    font-size: 8px;
+    margin-bottom: 0;
+  }
+  .arcade-wallet > strong {
+    font-size: 22px;
+  }
+  .arcade-warning {
+    padding: 13px;
+    gap: 9px;
+    margin-bottom: 18px;
+  }
+  .arcade-warning strong {
+    font-size: 8px;
+    line-height: 1.5;
+    letter-spacing: 0.3px;
+  }
+  .casino-lobby {
+    display: flex;
+    overflow-x: auto;
+    gap: 9px;
+    margin: 0 -18px 20px;
+    padding: 0 18px 8px;
+    scroll-snap-type: x mandatory;
+  }
+  .casino-tile {
+    flex-shrink: 0;
+    width: 135px;
+    min-height: 130px;
+    padding: 19px 10px;
+    scroll-snap-align: start;
+  }
+  .casino-symbol {
+    font-size: 28px;
+  }
+  .arcade-sidebar {
+    width: 100%;
+    order: -1;
+    gap: 15px;
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  .arcade-sidebar > .daily-arcade,
+  .arcade-sidebar > .recovery,
+  .arcade-sidebar > .safety {
+    display: none;
+  }
+  .arcade-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  .arcade-sidebar {
+    order: 0;
+    grid-row: 1;
+  }
+  .arcade-game {
+    grid-row: 2;
+    padding: 19px;
+  }
+  .arcade-sidebar > .panel {
+    padding: 18px;
+  }
+  .arcade-sidebar .section-title {
+    margin-bottom: 13px;
+  }
+  .arcade-sidebar .quick-amounts {
+    margin-bottom: 10px;
+  }
+  .arcade-sidebar .quantity input {
+    height: 42px;
+    font-size: 20px;
+  }
+  .arcade-game .section-title {
+    flex-wrap: wrap;
+  }
+  .arcade-game .section-title p {
+    font-size: 10px;
+  }
+  .card-table {
+    padding: 19px 15px;
+  }
+  .playing-card {
+    width: 65px;
+    height: 96px;
+  }
+  .playing-card > b {
+    font-size: 12px;
+  }
+  .playing-card > strong {
+    font-size: 27px;
+  }
+  .playing-card > small {
+    font-size: 8px;
+  }
+  .cards {
+    min-height: 102px;
+    gap: 9px;
+  }
+  .table-inscription {
+    font-size: 7px;
+    letter-spacing: 2px;
+  }
+  .card-placeholder {
+    height: 96px;
+  }
+  .hand-label {
+    font-size: 8px;
+    letter-spacing: 1px;
+  }
+  .arcade-actions {
+    gap: 8px;
+  }
+  .arcade-actions > .primary,
+  .arcade-actions > .secondary {
+    font-size: 10px;
+    padding: 12px 8px;
+  }
+  .arcade-result {
+    padding: 13px;
+    gap: 8px;
+  }
+  .arcade-result strong {
+    font-size: 11px;
+  }
+  .arcade-result p {
+    font-size: 9px;
+  }
+  .slot-machine {
+    padding: 19px 15px;
+  }
+  .slot-title {
+    font-size: 15px;
+    letter-spacing: 3px;
+  }
+  .slot-reels {
+    padding: 10px;
+    gap: 9px;
+  }
+  .reel {
+    font-size: 35px;
+    height: 100px;
+  }
+  .slot-lights {
+    letter-spacing: 4px;
+  }
+  .roulette-options > button {
+    font-size: 10px;
+    padding: 9px 8px;
+  }
+  .roulette-ring {
+    width: 240px;
+    height: 240px;
+  }
+  .market-wheel-disc {
+    width: 272px;
+    height: 272px;
+  }
+  .game-rules {
+    font-size: 9px;
+  }
+  .arcade-recovery-mobile {
+    display: block !important;
+    margin-top: 18px;
+  }
+  .arcade-recovery-mobile .daily-arcade,
+  .arcade-recovery-mobile .recovery {
+    margin-top: 15px;
+  }
+  .casino-wallet-footer {
+    display: block !important;
+  }
+  .high-low-stage p {
+    font-size: 11px;
+  }
+}
+.arcade-recovery-mobile,
+.casino-wallet-footer {
+  display: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .wheel-played,
+  .reel.spun,
+  .playing-card,
+  .company-price strong,
+  .arcade-result {
+    animation: none !important;
+  }
+}
+@media (max-width: 760px) {
+  .arcade-sidebar {
+    display: contents;
+  }
+  .arcade-sidebar > .panel:first-child {
+    grid-row: 1;
+  }
+  .arcade-sidebar > .daily-arcade {
+    display: block;
+    grid-row: 3;
+  }
+  .arcade-sidebar > .recovery {
+    display: block;
+    grid-row: 4;
+  }
+  .arcade-sidebar > .safety {
+    display: flex;
+    grid-row: 5;
+  }
+}
+.watchlist-strip {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  margin-bottom: 23px;
+  padding: 17px 20px;
+  background: linear-gradient(130deg, #251f32, #121824);
+}
+.watchlist-strip > div:first-child {
+  flex-shrink: 0;
+}
+.watchlist-strip h3 {
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+.watchlist-strip small {
+  font-size: 9px;
+}
+.watchlist-strip > div:last-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.watchlist-strip button {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid #3a354c;
+  border-radius: 6px;
+  padding: 8px 10px;
+  background: #252134;
+  color: #baabc9;
+  font-size: 10px;
+}
+.watchlist-strip button svg {
+  color: #fbbf24;
+}
+.watchlist-strip button.selected {
+  border-color: #ac93ff;
+}
+.watchlist-strip button > span {
+  font-size: 9px;
+  color: #9baaaf;
+}
+.watchlist-strip p {
+  font-size: 11px;
+}
+@media (max-width: 760px) {
+  .watchlist-strip {
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 17px;
+    order: 0;
+  }
+  .watchlist-strip > div:last-child {
+    width: 100%;
+  }
+  .watchlist-strip > div:last-child > button {
+    padding: 9px 11px;
+  }
+}

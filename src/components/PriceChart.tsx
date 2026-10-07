@@ -7,14 +7,24 @@ export function PriceChart({
   a,
   trades,
   position,
+  rangeOptions,
+  valueLabel,
+  formatValue,
+  updateLabel = "Hover to explore · Updates every second",
 }: {
   a: Asset;
   trades: Trade[];
   position?: Position;
+  rangeOptions?: Record<string, number>;
+  updateLabel?: string;
+  valueLabel?: string;
+  formatValue?: (n: number) => string;
 }) {
-  const [range, setRange] = useState("15M"),
+  const displayPrice = (v: number) =>
+    formatValue ? formatValue(v) : price(a, v);
+  const [range, setRange] = useState(rangeOptions ? "1D" : "15M"),
     [hover, setHover] = useState<number | null>(null);
-  const ranges: Record<string, number> = {
+  const ranges: Record<string, number> = rangeOptions ?? {
     "1M": 60000,
     "5M": 300000,
     "15M": 900000,
@@ -66,9 +76,10 @@ export function PriceChart({
       <div className="chart-toolbar">
         <div>
           <span className="dot" />{" "}
-          {selected ? price(a, selected.price) : price(a)}{" "}
+          {selected ? displayPrice(selected.price) : displayPrice(a.price)}{" "}
           <small>
-            {a.kind === "prediction" ? "YES PROBABILITY" : "SHARE PRICE"}
+            {valueLabel ??
+              (a.kind === "prediction" ? "YES PROBABILITY" : "SHARE PRICE")}
           </small>
         </div>
         <div className="ranges">
@@ -87,7 +98,7 @@ export function PriceChart({
         viewBox="0 0 700 205"
         role="img"
         aria-label={`${a.name} interactive price chart`}
-        onMouseMove={(e) => {
+        onPointerMove={(e) => {
           const rect = e.currentTarget.getBoundingClientRect();
           setHover(
             Math.max(
@@ -96,7 +107,24 @@ export function PriceChart({
             ),
           );
         }}
-        onMouseLeave={() => setHover(null)}
+        onPointerLeave={() => setHover(null)}
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+            e.preventDefault();
+            setHover(
+              Math.max(
+                0,
+                Math.min(
+                  1,
+                  (hover ?? 1) +
+                    (e.key === "ArrowLeft" ? -1 : 1) /
+                      Math.max(1, points.length - 1),
+                ),
+              ),
+            );
+          }
+        }}
       >
         <defs>
           <linearGradient id={`fill-${a.id}`} x1="0" x2="0" y1="0" y2="1">
@@ -119,7 +147,7 @@ export function PriceChart({
               strokeDasharray="3 5"
             />
             <text x="649" y={34 + i * 46}>
-              {price(a, max - ((max - min) * (i * 46 + 0)) / 140)}
+              {displayPrice(max - ((max - min) * (i * 46 + 0)) / 140)}
             </text>
           </g>
         ))}
@@ -156,6 +184,10 @@ export function PriceChart({
         ))}
         {selected && (
           <g>
+            <text x="8" y="12">
+              {new Date(selected.time).toLocaleString()} ·{" "}
+              {displayPrice(selected.price)}
+            </text>
             <line
               x1={x(selected.time)}
               x2={x(selected.time)}
@@ -179,10 +211,15 @@ export function PriceChart({
           fill={up ? "#47e6b1" : "#ff7486"}
         />
         <text x="0" y="203">
-          {new Date(points[0].time).toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          })}
+          {ranges[range] > 21600000
+            ? new Date(points[0].time).toLocaleDateString([], {
+                month: "short",
+                day: "numeric",
+              })
+            : new Date(points[0].time).toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
         </text>
         <text x="590" y="203">
           NOW
@@ -195,7 +232,7 @@ export function PriceChart({
         <span>
           <i className="gold" /> Sell / cash out
         </span>
-        <span>Hover to explore · Updates every second</span>
+        <span>{updateLabel}</span>
       </div>
     </div>
   );

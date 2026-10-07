@@ -1,6 +1,7 @@
 import { useState } from "react";
+import { netWorth } from "../investing";
 
-import { type Game, equity, money } from "../engine";
+import { type Game, money } from "../engine";
 
 import { pct, signed } from "../format";
 export function Leaderboard({ g }: { g: Game }) {
@@ -23,7 +24,7 @@ export function Leaderboard({ g }: { g: Game }) {
   const closed = g.trades.filter((t) => t.action !== "buy");
   rows.push({
     name: g.username,
-    value: equity(g, "prediction"),
+    value: netWorth(g),
     best: Math.max(0, ...closed.map((t) => t.profit)),
     worst: Math.min(0, ...closed.map((t) => t.profit)),
     rate: closed.length

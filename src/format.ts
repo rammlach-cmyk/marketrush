@@ -10,6 +10,8 @@ export const tabs = [
   "Markets",
   "Day Trading",
   "Portfolio",
+  "Stock Market",
+  "Casino",
   "Leaderboard",
   "Profile",
   "How to Play",
